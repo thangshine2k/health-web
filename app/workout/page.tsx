@@ -130,7 +130,7 @@ export default function WorkoutPage() {
           </Typography>
 
           <Stack spacing={2}>
-            {data.sessions.map((session) => (
+            {data.sessions?.map((session) => (
               <Card key={session.label} sx={{ borderRadius: 4 }}>
                 <CardContent>
                   <Typography>

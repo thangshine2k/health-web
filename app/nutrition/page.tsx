@@ -134,7 +134,7 @@ export default function NutritionPage() {
           </Typography>
 
           <Stack spacing={2}>
-            {data.meals.map((meal) => (
+            {data.meals?.map((meal) => (
               <Card key={meal.label} sx={{ borderRadius: 4 }}>
                 <CardContent>
                   <Typography>
