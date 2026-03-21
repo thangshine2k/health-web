@@ -31,6 +31,8 @@ export default function SleepPage() {
       const res = await api.get("/sleep?userId=1");
       return res.data;
     },
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
   if (isLoading) {

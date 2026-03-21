@@ -34,6 +34,8 @@ export default function WorkoutPage() {
       const res = await api.get("/workouts?userId=1");
       return res.data;
     },
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
   if (isLoading) {
@@ -152,8 +154,8 @@ export default function WorkoutPage() {
             <CardContent>
               <Typography>
                 You are slightly below your daily workout goal. Try adding a
-                short 15-minute session in the afternoon or evening to meet
-                your target.
+                short 15-minute session in the afternoon or evening to meet your
+                target.
               </Typography>
             </CardContent>
           </Card>
