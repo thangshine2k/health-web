@@ -51,6 +51,8 @@ export default function Dashboard() {
       const res = await api.get("/health?userId=1");
       return res.data;
     },
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 phút
     enabled: !!token, // 👈 control ở đây
   });
 
