@@ -134,7 +134,7 @@ export default function WaterPage() {
           </Typography>
 
           <Stack spacing={2}>
-            {data.times.map((item) => (
+            {data.times?.map((item) => (
               <Card key={item.label} sx={{ borderRadius: 4 }}>
                 <CardContent>
                   <Typography>{item.label}</Typography>

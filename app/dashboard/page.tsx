@@ -4,13 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../service/api";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import BedIcon from "@mui/icons-material/Bed";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-
 import {
   AppBar,
   Toolbar,
@@ -22,13 +15,8 @@ import {
   Box,
   Button,
   Drawer,
-  List,
-  ListItem,
-  ListItemText,
   Grid,
   Stack,
-  ListItemButton,
-  ListItemIcon,
 } from "@mui/material";
 import { Sidebar } from "../components/Sidebar";
 
@@ -65,14 +53,6 @@ export default function Dashboard() {
     },
     enabled: !!token, // 👈 control ở đây
   });
-
-  const menuItems = [
-    { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    { label: "Water", icon: <WaterDropIcon />, path: "/water" },
-    { label: "Sleep", icon: <BedIcon />, path: "/sleep" },
-    { label: "Nutrition", icon: <RestaurantIcon />, path: "/nutrition" },
-    { label: "Workout", icon: <FitnessCenterIcon />, path: "/workout" },
-  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -133,7 +113,7 @@ export default function Dashboard() {
           )}
 
           <Grid container spacing={3}>
-            {data.map((item: LogType) => (
+            {data?.map((item: LogType) => (
               <Stack key={item.id}>
                 <Card
                   sx={{
