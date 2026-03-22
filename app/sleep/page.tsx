@@ -68,25 +68,11 @@ export default function SleepPage() {
 
   return (
     <Stack>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Sidebar />
-      </Drawer>
-
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          ml: `${drawerWidth}px`, // ⚡ quan trọng: tránh đè lên Drawer
         }}
       >
         <Typography variant="h5" fontWeight="bold" mb={3}>

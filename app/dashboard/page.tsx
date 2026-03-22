@@ -76,20 +76,6 @@ export default function Dashboard() {
   }
   return (
     <Box sx={{ display: "flex" }}>
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Sidebar />
-      </Drawer>
-
       {/* Main */}
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
