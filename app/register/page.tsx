@@ -7,51 +7,44 @@ import { api } from "../service/api";
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  FormControlLabel,
   TextField,
   Typography,
   Paper,
 } from "@mui/material";
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const router = useRouter();
+
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
-
-  const handleLogin = async () => {
-    if (isLoading) return; // chống spam click
+  const handleRegister = async () => {
+    if (isLoading) return;
 
     setIsLoading(true);
+
     try {
-      const res = await api.post("/auth/login", {
+      await api.post("/auth/register", {
+        username,
         email,
         password,
       });
 
-      localStorage.setItem("token", res.data.access_token);
-
-      toast.success("Login successful", {
-        style: {
-          background: "#4CAF50",
-          color: "#fff",
-        },
-      });
+      toast.success("Register successful 🎉");
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/login");
       }, 500);
     } catch (err) {
       setIsLoading(false);
-      console.error(err);
-      toast.error("Login failed");
+      toast.error("Register failed");
     }
   };
 
@@ -73,23 +66,28 @@ export default function LoginPage() {
         </Avatar>
 
         <Typography component="h1" variant="h5">
-          Sign in
+          Register
         </Typography>
 
-        <Box component="form" sx={{ mt: 2, width: "100%" }}>
+        <Box sx={{ mt: 2, width: "100%" }}>
+          {/* <TextField
+            margin="normal"
+            fullWidth
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          /> */}
+
           <TextField
             margin="normal"
-            required
             fullWidth
-            placeholder="Email Address"
-            autoFocus
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <TextField
             margin="normal"
-            required
             fullWidth
             placeholder="Password"
             type="password"
@@ -97,28 +95,29 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <FormControlLabel
-            control={<Checkbox color="primary" />}
-            label="Remember me"
-          />
-
           <Button
             fullWidth
             variant="contained"
             sx={{ mt: 2, py: 1.2, borderRadius: 2 }}
-            onClick={handleLogin}
+            onClick={handleRegister}
             disabled={isLoading}
           >
-            Sign In
+            Register
           </Button>
+
+          {/* 👇 quay lại login */}
           <Box textAlign="center" mt={2}>
             <Typography variant="body2">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <span
-                style={{ color: "#1976d2", cursor: "pointer", fontWeight: 500 }}
-                onClick={() => router.push("/register")}
+                style={{
+                  color: "#1976d2",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                }}
+                onClick={() => router.push("/login")}
               >
-                Register
+                Login
               </span>
             </Typography>
           </Box>

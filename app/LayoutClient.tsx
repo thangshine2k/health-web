@@ -15,7 +15,7 @@ export default function LayoutClient({
 }) {
   const pathname = usePathname();
 
-  const hideSidebar = pathname === "/" || pathname === "/login";
+  const hideSidebar = pathname === "/" || pathname === "/login" || pathname === "/register";
   const isMobile = useMediaQuery("(max-width:560px)");
 
   return (

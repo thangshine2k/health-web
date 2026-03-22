@@ -109,7 +109,7 @@ export default function Dashboard() {
         sx={{ background: "transparent", color: "#000", px: 1 }}
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h6">Health Dashboard</Typography>
+          <Typography variant="h6">Dashboard</Typography>
 
           <Button
             onClick={handleLogout}
