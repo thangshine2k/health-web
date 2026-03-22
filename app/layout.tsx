@@ -15,24 +15,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <ThemeRegistry>
-          <Providers>
-            <Drawer
-              variant="permanent"
-              sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                "& .MuiDrawer-paper": {
-                  width: drawerWidth,
-                  boxSizing: "border-box",
-                },
-              }}
-            >
-              <Sidebar />
-            </Drawer>
-            {children}
-          </Providers>
-        </ThemeRegistry> */}
         <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
