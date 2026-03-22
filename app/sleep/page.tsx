@@ -3,17 +3,13 @@
 import {
   Box,
   Typography,
-  Grid,
   Card,
   CardContent,
   LinearProgress,
   Stack,
   Chip,
-  Drawer,
   CircularProgress,
 } from "@mui/material";
-import { Sidebar } from "../components/Sidebar";
-import { drawerWidth } from "../config";
 import { api } from "../service/api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -33,7 +29,6 @@ export default function SleepPage() {
       return res.data;
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
   if (isLoading) {
@@ -52,7 +47,7 @@ export default function SleepPage() {
   }
 
   // Error
-  if (error || !data) {
+  if (error || !data || !localStorage.getItem("token")) {
     return (
       <Box
         sx={{
@@ -81,11 +76,24 @@ export default function SleepPage() {
         </Typography>
 
         {/* ===== Overview ===== */}
-        <Grid container spacing={3}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          flexWrap="wrap"
+          mb={3}
+          gap={3}
+        >
           <Box sx={{ flex: 1 }}>
-            <Card sx={{ borderRadius: 4 }}>
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#E3F2FD",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
               <CardContent>
-                <Typography color="text.secondary">Total Sleep</Typography>
+                <Typography color="text.secondary">Total Sleep Time</Typography>
                 <Typography variant="h3" fontWeight="bold">
                   {data.totalSleep}h
                 </Typography>
@@ -94,7 +102,15 @@ export default function SleepPage() {
           </Box>
 
           <Box sx={{ flex: 1 }}>
-            <Card sx={{ borderRadius: 4 }}>
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#E3F2FD",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
               <CardContent>
                 <Typography color="text.secondary">Sleep Score</Typography>
                 <Typography variant="h3" fontWeight="bold">
@@ -103,25 +119,33 @@ export default function SleepPage() {
                 <LinearProgress
                   variant="determinate"
                   value={data.score}
-                  sx={{ mt: 2, height: 8, borderRadius: 5 }}
+                  sx={{ mt: -0.35 }}
                 />
               </CardContent>
             </Card>
           </Box>
 
           <Box sx={{ flex: 1 }}>
-            <Card sx={{ borderRadius: 4 }}>
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#E3F2FD",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
               <CardContent>
                 <Typography color="text.secondary">Sleep Quality</Typography>
                 <Chip
                   label={data.score > 80 ? "Good" : "Average"}
                   color={data.score > 80 ? "success" : "warning"}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 3.2 }}
                 />
               </CardContent>
             </Card>
           </Box>
-        </Grid>
+        </Stack>
 
         {/* ===== Sleep Breakdown ===== */}
         <Box mt={4}>

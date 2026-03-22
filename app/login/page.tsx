@@ -34,8 +34,16 @@ export default function LoginPage() {
 
       localStorage.setItem("token", res.data.access_token);
 
-      toast.success("Login successful 🎉");
-      router.push("/dashboard");
+      toast.success("Login successful", {
+        style: {
+          background: "#4CAF50",
+          color: "#fff",
+        },
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 500);
     } catch (err) {
       console.error(err);
       toast.error("Login failed");
