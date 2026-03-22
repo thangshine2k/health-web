@@ -22,10 +22,14 @@ import toast from "react-hot-toast";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleLogin = async () => {
+    if (isLoading) return; // chống spam click
+
+    setIsLoading(true);
     try {
       const res = await api.post("/auth/login", {
         email,
@@ -34,9 +38,18 @@ export default function LoginPage() {
 
       localStorage.setItem("token", res.data.access_token);
 
-      toast.success("Login successful 🎉");
-      router.push("/dashboard");
+      toast.success("Login successful", {
+        style: {
+          background: "#4CAF50",
+          color: "#fff",
+        },
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 500);
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
       toast.error("Login failed");
     }
@@ -94,6 +107,7 @@ export default function LoginPage() {
             variant="contained"
             sx={{ mt: 2, py: 1.2, borderRadius: 2 }}
             onClick={handleLogin}
+            disabled={isLoading}
           >
             Sign In
           </Button>

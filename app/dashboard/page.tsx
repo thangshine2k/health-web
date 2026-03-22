@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
@@ -14,19 +15,25 @@ import {
   CircularProgress,
   Box,
   Button,
-  Drawer,
-  Grid,
   Stack,
 } from "@mui/material";
-import { Sidebar } from "../components/Sidebar";
 
-type LogType = {
-  id: number;
-  type: string;
-  value: number;
+// ===== Types =====
+type Water = {
+  totalIntake: number;
 };
 
-const drawerWidth = 220;
+type Nutrition = {
+  totalCalories: number;
+};
+
+type Sleep = {
+  totalSleep: number;
+};
+
+type Workout = {
+  totalMinutes: number;
+};
 
 export default function Dashboard() {
   const router = useRouter();
@@ -35,31 +42,49 @@ export default function Dashboard() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToken(localStorage.getItem("token"));
     setMounted(true);
   }, []);
 
-  // ✅ Hook luôn được gọi
-  const {
-    data = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["health-logs"],
-    queryFn: async () => {
-      const res = await api.get("/health?userId=1");
-      return res.data;
-    },
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5, // 5 phút
-    enabled: !!token, // 👈 control ở đây
+  // ===== Queries =====
+  const { data: water, isLoading: loadingWater } = useQuery<Water>({
+    queryKey: ["water"],
+    queryFn: async () => (await api.get("/water?userId=1")).data,
+    enabled: !!token,
+    staleTime: 1000 * 60 * 5,
   });
 
+  const { data: nutrition, isLoading: loadingNutrition } = useQuery<Nutrition>({
+    queryKey: ["nutrition"],
+    queryFn: async () => (await api.get("/nutrition?userId=1")).data,
+    enabled: !!token,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const { data: sleep, isLoading: loadingSleep } = useQuery<Sleep>({
+    queryKey: ["sleep"],
+    queryFn: async () => (await api.get("/sleep?userId=1")).data,
+    enabled: !!token,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const { data: workout, isLoading: loadingWorkout } = useQuery<Workout>({
+    queryKey: ["workout"],
+    queryFn: async () => (await api.get("/workouts?userId=1")).data,
+    enabled: !!token,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const isLoading =
+    loadingWater || loadingNutrition || loadingSleep || loadingWorkout;
+
+  // ===== Logout =====
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.replace("/");
   };
+
+  // ===== Auth check =====
   if (!mounted || !token) {
     return (
       <Box
@@ -74,62 +99,125 @@ export default function Dashboard() {
       </Box>
     );
   }
+
   return (
-    <Box sx={{ display: "flex" }}>
-      {/* Main */}
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Typography variant="h6">Health Dashboard</Typography>
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
+    <Box>
+      {/* ===== Header ===== */}
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{ background: "transparent", color: "#000", px: 1 }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6">Dashboard</Typography>
 
-        <Container sx={{ mt: 4 }}>
-          {isLoading && (
-            <Box textAlign="center">
-              <CircularProgress />
-            </Box>
-          )}
+          <Button
+            onClick={handleLogout}
+            sx={{
+              color: "#fff",
+              background: "#ef4444",
+              textTransform: "none",
+              fontWeight: 500,
+              borderRadius: 2,
+              px: 2,
+              "&:hover": {
+                background: "#dc2626",
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-          {error && <Typography color="error">Failed to load data</Typography>}
+      {/* ===== Content ===== */}
+      <Stack sx={{ m: 3, my: 2 }} display={{ xm: "block", md: "flex" }}>
+        {isLoading ? (
+          <Box textAlign="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 3,
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Water */}
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#E3F2FD",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Typography color="text.secondary">Water 💧</Typography>
+                <Typography variant="h4" fontWeight="bold">
+                  {water?.totalIntake || 0} L
+                </Typography>
+              </CardContent>
+            </Card>
 
-          {!isLoading && !error && data.length === 0 && (
-            <Typography>No data available</Typography>
-          )}
+            {/* Nutrition */}
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#FFF3E0",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Typography color="text.secondary">Calories 🍎</Typography>
+                <Typography variant="h4" fontWeight="bold">
+                  {nutrition?.totalCalories || 0} kcal
+                </Typography>
+              </CardContent>
+            </Card>
 
-          <Grid container spacing={3}>
-            {data?.map((item: LogType) => (
-              <Stack key={item.id}>
-                <Card
-                  sx={{
-                    borderRadius: 4,
-                    p: 1,
-                    boxShadow: 2,
-                    transition: "0.3s",
-                    "&:hover": {
-                      transform: "translateY(-6px)",
-                      boxShadow: 6,
-                    },
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      {item.type}
-                    </Typography>
+            {/* Sleep */}
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#E8F5E9",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Typography color="text.secondary">Sleep 😴</Typography>
+                <Typography variant="h4" fontWeight="bold">
+                  {sleep?.totalSleep || 0} h
+                </Typography>
+              </CardContent>
+            </Card>
 
-                    <Typography variant="h4" fontWeight="bold">
-                      {item.value}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Stack>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+            {/* Workout */}
+            <Card
+              sx={{
+                flex: "1 1 250px",
+                borderRadius: 4,
+                background: "#F3E5F5",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Typography color="text.secondary">Workout 💪</Typography>
+                <Typography variant="h4" fontWeight="bold">
+                  {workout?.totalMinutes || 0} min
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+        )}
+      </Stack>
     </Box>
   );
 }
