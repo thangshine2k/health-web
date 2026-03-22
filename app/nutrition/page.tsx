@@ -7,25 +7,10 @@ import {
   CardContent,
   Stack,
   Chip,
-  Drawer,
   CircularProgress,
 } from "@mui/material";
-import { Sidebar } from "../components/Sidebar";
-import { drawerWidth } from "../config";
 import { api } from "../service/api";
 import { useQuery } from "@tanstack/react-query";
-
-// Dữ liệu mẫu Nutrition
-// const nutritionData = {
-//   calories: 1800,
-//   goalCalories: 2000,
-//   percentage: 90,
-//   meals: [
-//     { label: "Breakfast", calories: 500 },
-//     { label: "Lunch", calories: 700 },
-//     { label: "Dinner", calories: 600 },
-//   ],
-// };
 
 type NutritionData = {
   totalCalories: number;
@@ -41,7 +26,6 @@ export default function NutritionPage() {
       return res.data;
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
   if (isLoading) {
@@ -60,7 +44,7 @@ export default function NutritionPage() {
   }
 
   // Error
-  if (error || !data) {
+  if (error || !data || !localStorage.getItem("token")) {
     return (
       <Box
         sx={{
@@ -90,8 +74,21 @@ export default function NutritionPage() {
         </Typography>
 
         {/* ===== Overview ===== */}
-        <Stack direction="row" spacing={3} flexWrap="wrap" mb={4}>
-          <Card sx={{ borderRadius: 4, flex: "1 1 250px" }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          flexWrap="wrap"
+          mb={3}
+          gap={3}
+        >
+          <Card
+            sx={{
+              flex: { xs: "1 1 120px", sm: "1 1 250px" },
+              borderRadius: 4,
+              background: "#E3F2FD",
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-5px)" },
+            }}
+          >
             <CardContent>
               <Typography color="text.secondary">Calories Intake</Typography>
               <Typography variant="h3" fontWeight="bold">
@@ -100,7 +97,15 @@ export default function NutritionPage() {
             </CardContent>
           </Card>
 
-          <Card sx={{ borderRadius: 4, flex: "1 1 250px" }}>
+          <Card
+            sx={{
+              flex: { xs: "1 1 160px", sm: "1 1 250px" },
+              borderRadius: 4,
+              background: "#E3F2FD",
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-5px)" },
+            }}
+          >
             <CardContent>
               <Typography color="text.secondary">Goal Calories</Typography>
               <Typography variant="h3" fontWeight="bold">

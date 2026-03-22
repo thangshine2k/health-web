@@ -8,11 +8,8 @@ import {
   LinearProgress,
   Stack,
   Chip,
-  Drawer,
   CircularProgress,
 } from "@mui/material";
-import { Sidebar } from "../components/Sidebar";
-import { drawerWidth } from "../config";
 import { api } from "../service/api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -31,7 +28,6 @@ export default function WaterPage() {
       return res.data;
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
   if (isLoading) {
@@ -50,7 +46,7 @@ export default function WaterPage() {
   }
 
   // Error
-  if (error || !data) {
+  if (error || !data || !localStorage.getItem("token")) {
     return (
       <Box
         sx={{
@@ -79,8 +75,21 @@ export default function WaterPage() {
         </Typography>
 
         {/* ===== Overview ===== */}
-        <Stack direction="row" spacing={3} flexWrap="wrap" mb={4}>
-          <Card sx={{ borderRadius: 4, flex: "1 1 250px" }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          flexWrap="wrap"
+          mb={3}
+          gap={3}
+        >
+          <Card
+            sx={{
+              flex: { xs: "1 1 120px", sm: { xs: "1 1 120px", sm: "1 1 250px" } },
+              borderRadius: 4,
+              background: "#E3F2FD",
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-5px)" },
+            }}
+          >
             <CardContent>
               <Typography color="text.secondary">Total Intake</Typography>
               <Typography variant="h3" fontWeight="bold">
@@ -89,7 +98,15 @@ export default function WaterPage() {
             </CardContent>
           </Card>
 
-          <Card sx={{ borderRadius: 4, flex: "1 1 250px" }}>
+          <Card
+            sx={{
+              flex: { xs: "1 1 140px", sm: "1 1 250px" },
+              borderRadius: 4,
+              background: "#E3F2FD",
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-5px)" },
+            }}
+          >
             <CardContent>
               <Typography color="text.secondary">Goal</Typography>
               <Typography variant="h3" fontWeight="bold">
@@ -103,7 +120,15 @@ export default function WaterPage() {
             </CardContent>
           </Card>
 
-          <Card sx={{ borderRadius: 4, flex: "1 1 250px" }}>
+          <Card
+            sx={{
+              flex: { xs: "1 1 120px", sm: "1 1 250px" },
+              borderRadius: 4,
+              background: "#E3F2FD",
+              transition: "0.3s",
+              "&:hover": { transform: "translateY(-5px)" },
+            }}
+          >
             <CardContent>
               <Typography color="text.secondary">Progress</Typography>
               <Chip
