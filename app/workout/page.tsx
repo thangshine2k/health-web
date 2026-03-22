@@ -48,7 +48,7 @@ export default function WorkoutPage() {
           justifyContent: "center",
         }}
       >
-        {/* <CircularProgress /> */}
+        <CircularProgress />
       </Box>
     );
   }

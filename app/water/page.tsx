@@ -9,6 +9,7 @@ import {
   Stack,
   Chip,
   Drawer,
+  CircularProgress,
 } from "@mui/material";
 import { Sidebar } from "../components/Sidebar";
 import { drawerWidth } from "../config";
@@ -43,7 +44,7 @@ export default function WaterPage() {
           justifyContent: "center",
         }}
       >
-        {/* <CircularProgress /> */}
+        <CircularProgress />
       </Box>
     );
   }

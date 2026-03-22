@@ -8,6 +8,7 @@ import {
   Stack,
   Chip,
   Drawer,
+  CircularProgress,
 } from "@mui/material";
 import { Sidebar } from "../components/Sidebar";
 import { drawerWidth } from "../config";
@@ -53,7 +54,7 @@ export default function NutritionPage() {
           justifyContent: "center",
         }}
       >
-        {/* <CircularProgress /> */}
+        <CircularProgress />
       </Box>
     );
   }
