@@ -69,21 +69,6 @@ export default function WorkoutPage() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Sidebar />
-      </Drawer>
-
       {/* Main content */}
       <Box
         component="main"
