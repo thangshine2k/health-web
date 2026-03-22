@@ -10,6 +10,7 @@ import {
   Stack,
   Chip,
   Drawer,
+  CircularProgress,
 } from "@mui/material";
 import { Sidebar } from "../components/Sidebar";
 import { drawerWidth } from "../config";
@@ -45,7 +46,7 @@ export default function SleepPage() {
           justifyContent: "center",
         }}
       >
-        {/* <CircularProgress /> */}
+        <CircularProgress />
       </Box>
     );
   }
